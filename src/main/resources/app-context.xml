@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <context:component-scan base-package="ua.levelup.WithAnnotations"/>
+    <aop:aspectj-autoproxy />   <!--Это надо для создания аспектов через аннотации. Более конретно -
+    для создания прокси-объектов-->
+
+    <bean id="slayDragonQuest" class="ua.levelup.WithXML.Quests.SlayMonsterQuest">
+        <constructor-arg ref="dragon"/>
+    </bean>
+
+    <bean id="dragon" class="ua.levelup.WithXML.Heroes.Dragon">
+        <constructor-arg value="10"/>
+    </bean>
+
+    <bean id="Bobby" class="ua.levelup.WithXML.Heroes.BraveKnight">
+        <constructor-arg ref="slayDragonQuest"/>
+        <constructor-arg value="9"/>
+    </bean>
+
+    <bean id="bigDragon" class="ua.levelup.WithAnnotations.Heroes.Dragon"/>
+
+    <aop:config>
+        <aop:aspect ref="dragon">
+            <aop:pointcut id="embark"
+                          expression="execution(* ua.levelup.WithXML.Heroes.BraveKnight.embarkOnQuest(..))"/>
+            <aop:before pointcut-ref="embark" method="appearance"/>
+            <aop:after-throwing pointcut-ref="embark" method="doSomethingBad"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
