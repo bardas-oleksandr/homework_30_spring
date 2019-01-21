@@ -9,6 +9,7 @@ import ua.levelup.WithXML.Heroes.GoodGuy;
 
 public class App {
     public static void main( String[] args ) {
+        //Some changes
         System.out.println("===============Dependency injection with XML-config file=================\n");
         ApplicationContext ctx = new ClassPathXmlApplicationContext("app-context.xml");
 
